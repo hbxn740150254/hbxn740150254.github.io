@@ -650,6 +650,162 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/07/一行核心代码做出类似tableViewHeaderView和AppStore里的ScrollView悬浮条效果/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Michael的小屋">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Michael的小屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/03/07/一行核心代码做出类似tableViewHeaderView和AppStore里的ScrollView悬浮条效果/" itemprop="url">
+                  一行核心代码做出类似tableViewHeaderView和AppStore里的ScrollView悬浮条效果
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-07T14:27:12+08:00">
+                2017-03-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>现在主流app里面经常需要有tableView上滑出现悬浮条样式的设计，宝宝看了下appleStore里面专题推荐用的scrollView 也有类似的悬浮效果，只不过它是下拉悬浮，而主流的是上滑悬浮！最终实现效果如以下gif图。<br><img src="http://upload-images.jianshu.io/upload_images/2546918-daecab37aeea565e.gif?imageMogr2/auto-orient/strip" alt="上滑悬停条样式"><br><img src="http://upload-images.jianshu.io/upload_images/2546918-7e1e67715b9f7e73.gif?imageMogr2/auto-orient/strip" alt="appStore下拉悬浮条效果"><br><img src="http://upload-images.jianshu.io/upload_images/2546918-34237448f69a56bb.gif?imageMogr2/auto-orient/strip" alt="仿appStore效果"><br><em>其实一看上去 表以为是两种不同的方案，其实两种思路方式完全一致，本来核心代码就一行，那么要修改的代码岂不是半行，确实如此哦，宝宝已笑疯😂😂😂，好了啦，开个玩笑，进入正题！</em></p>
+<p>##先别敲代码，想想悬浮条实现思路</p>
+<ul>
+<li>###上滑悬浮条样式的思路<br>当你看到本文第一张的动图的时候你想到了什么，对，没错，上滑的时候高度在减小最后会减小到一个固定值，下滑的时候高度在增加最后也会增加到一个固定值，那么简单点描述就是悬浮条原点不变，让其高度减小，在下面代码里第二种实现方式就是这样；其实我实现的是让悬浮条的原点变化，高度不变，也是一样的效果。</li>
+<li>###appStore下拉悬浮条样式的思路<br>有了第一种思路，会发现下拉悬浮条的过程与上面惊人的相似，上滑的时候高度在减小，只不过最后会减为0，下滑的时候高度在增加最后也会增加到一个固定值。</li>
+<li>###技术实现<br>通过KVO监听tableView的contentOffset属性值或者在scrollView的代理方法中监听contentOffset的值来让悬浮条的原点变化，高度不变，或者原点不变，高度变化！<br>将自定义的headerView放在tabView 的上面，即headerView和tableView为平级关系，都添加到viewController的view上，然后设置tableView的contentInset为headerView的值，在tableView滑动的时候，动态改变view的位置或者大小，使这个headerView看起来就像是有了悬浮功能的tableView.tableHeaderView。</li>
+<li>###核心代码<br>宝宝真的没有骗你们，真的只要一行，只要你看得懂就行😂😂😂，因为我把五行if语句和成一行了，表问我为什么！<br>_yellowView.frame = offset.y &lt; -64 ? (offset.y &lt;= -200 ?  CGRectMake(0, 0, 375, 200) : CGRectMake(0, -offset.y - 200, 375, 200)) : CGRectMake(0, 64 - 200, 375, 200);</li>
+</ul>
+<p>##代码实现</p>
+<ul>
+<li>(void)viewDidLoad {</li>
+</ul>
+<p>[super viewDidLoad];<br>//加载tableView到self.view上<br>UITableView *tableView = [[UITableView alloc]  initWithFrame:CGRectMake(0, 0, 375, 667) style:UITableViewStylePlain];<br>[tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:@”Cell”];<br>tableView.dataSource = self;<br>tableView.contentInset = UIEdgeInsetsMake(200, 0, 0, 0);<br>[self.view addSubview:tableView];<br>//利用KVO监听tableView的contentOffset的属性值，从而动态改变悬浮条yellowView的frame值<br>[tableView addObserver:self forKeyPath:@”contentOffset” options:NSKeyValueObservingOptionNew context:nil];</p>
+<p>//加载yellowView作为悬浮条视图到self.view上，因此tableView和yellowView是同一级关系，黄色视图在tableView的上面<br>TouchView *yellowView = [[TouchView alloc] initWithFrame:CGRectMake(0, 0, 375, 200)];<br>yellowView.backgroundColor = [UIColor yellowColor];<br>//将alpha设置成为0.7的透明度是为了看得更清楚底下的tableView随时滚动的位置<br>yellowView.alpha = 0.7;<br>[self.view addSubview:yellowView];<br>//设置成全局的实例变量是为了在监听方法中可以改变悬浮条yellowView的frame值<br>_yellowView = yellowView;<br>}</p>
+<p>#pragma mark - KVO监听tableView的contentOffset的属性值变化<br>-(void)observeValueForKeyPath:(NSString <em>)keyPath ofObject:(id)object change:(NSDictionary<nskeyvaluechangekey,id> </nskeyvaluechangekey,id></em>)change context:(void *)context {</p>
+<p>CGPoint offset = [change[NSKeyValueChangeNewKey] CGPointValue];</p>
+<p>//64为悬浮条最终停留的高度<br>if (offset.y &lt; -64) {</p>
+<p>//小于-64则有两种情况，第一种小于-64是当悬浮条一进来时候，由于contentInset.top被我们调成了悬浮条的高度200，<br>因此offset.y初始值是-200，当用户上滑悬浮条的时候，会在 -200 &lt;= offset.y &lt;= -64 范围内波动，我们需要<br>调整悬浮条的Y坐标为-offset.y - 200，如- (-180) - 200 = -20 ,代表tableView向上偏移了20各点，我们改变其原点，<br>造成悬浮条悬停的假象;第二种小于-64是当悬浮条一进来时候，offset.y初始值是-200,当用户下滑悬浮条的时候，offset.y会负的越多，<br>在 offset.y &lt; -200 范围内波动，我们需要调整悬浮条的Y坐标为固定值200，不让其变大变小即可！！搞定</p>
+<p>//第一种方案，改变悬浮条的Y坐标，而不改变其高度，这也是本文核心代码！！！！<br>_yellowView.frame = offset.y &lt;= -200 ?  CGRectMake(0, 0, 375, 200) : CGRectMake(0, -offset.y - 200, 375, 200);</p>
+<p>//第二种方案，改变悬浮条的高度，而不改变其原点<br>//_yellowView.frame = offset.y &lt; -200 ?  CGRectMake(0, 0, 375, 200) : CGRectMake(0, 0, 375, -offset.y);</p>
+<p>//下面这行代码没必要添加，我看到网上很多人加了这句，实属没必要，tableView滚动本来就靠contentOffset，contentInset只是添加额外的滚动区域的<br>//_tableView.contentInset = offset.y &gt; -200 ? UIEdgeInsetsMake(-offset.y, 0, 0, 0) :UIEdgeInsetsMake(200, 0, 0, 0);<br>}else {</p>
+<p>//大于等于-64就只有一种情况了，当到达临界值的时候就会 悬停64的最小高度，该高度自己随便写啦，然后appStore那个效果是上滑到临界值后，高度依然减小，<br>那么需要调整悬浮条的Y坐标为-offset.y - 200，offset.y会越来越 大于-64，导致_yellowView.frame.origin.y负的越多，越来偏离屏幕原点，<br>正好满足需求看不见悬浮条啦！</p>
+<p>//appStore下拉悬浮条效果只需要改这行代码让上滑的时候原点超过其高度200，这样就看不到悬浮条了<br>//_yellowView.frame = CGRectMake(0, -offset.y - 200, 375, 200);;</p>
+<p>//第一种方案，改变悬浮条的Y坐标为悬停最小值64 - 200，这样在用户界面上就只显示64的高度，而不改变其高度<br>_yellowView.frame = CGRectMake(0, 64 - 200, 375, 200);</p>
+<p>//第二种方案，改变悬浮条的高度为最小值64，而不改变其原点<br>//_yellowView.frame = CGRectMake(0, 0, 375, 64);</p>
+<p>//下面这行代码没必要添加，我看到网上很多人加了这句，实属没必要，tableView滚动本来就靠contentOffset，contentInset只是添加额外的滚动区域的<br>//_tableView.contentInset = UIEdgeInsetsMake(64, 0, 0, 0);<br>}<br>}</p>
+<p>###自定义TouchView<br>如果有另外需求比如要是拖动黄色视图，tableView要是也能滚动的话，那么就需要自己拦截点击事件！！</p>
+<p>@implementation TouchView</p>
+<p>//这两个方法随便写一个即可，为的是拦截响应链，不让其捕获到触摸事件，这样用户手指点击上面的黄色视图，window分发触摸事件的时候，会认为用户点击的那个点最远的响应视图是 tableView，因为tableView在黄色视图的下方，这样，当滑动黄色视图的时候，tableView也跟着一起滚动了啦！！！</p>
+<ul>
+<li>(BOOL)pointInside:(CGPoint)point withEvent:(UIEvent *)event {<br>return NO;<br>}</li>
+</ul>
+<p>//先调用hitTest:withEvent:此方法，再调用pointInside:withEvent:<br>-(UIView <em>)hitTest:(CGPoint)point withEvent:(UIEvent </em>)event {</p>
+<p>UIView *view = [super hitTest:point withEvent:event];<br>if ([view isKindOfClass:[self class]]) {</p>
+<p>return nil;<br>}<br>return nil;<br>}</p>
+<p>@end</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/07/iOS头文件中如何在宏里引用已有的宏/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -775,6 +931,139 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/07/一行代码解决UITableView键盘收起/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Michael的小屋">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Michael的小屋">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/03/07/一行代码解决UITableView键盘收起/" itemprop="url">
+                  一行代码解决UITableView键盘收起
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-03-07T14:27:12+08:00">
+                2017-03-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>##iOS中常用地收起键盘的几种方式</p>
+<ul>
+<li>#####添加singleTap单击手势</li>
+<li>#####调用API方法</li>
+</ul>
+<p>####1.添加singleTap单击手势</p>
+<p>UITapGestureRecognizer *singleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard:)];<br>singleTapGesture.numberOfTapsRequired = 1;<br>singleTapGesture.cancelsTouchesInView = NO;<br>[tableView addGestureRecognizer:singleTapGesture];</p>
+<p>#pragma mark - gesture actions</p>
+<ul>
+<li>(void)closeKeyboard:(UITapGestureRecognizer <em>)recognizer {<br>//在对应的手势触发方法里面让键盘失去焦点<br>[_textField resignFirstResponder];<br>//或者使用第二种方法,该方法会一直找到textField或者内嵌的texfield，让它取消第一响应者<br>//[self.view endEditing:YES];<br>}<br>大家可能会对cancelsTouchesInView这个属性有所好奇，为什么要设置成NO，我们通过看其官方API<br>A Boolean value affecting whether touches are delivered to a view when a gesture is recognized.<br>default is YES. causes touchesCancelled:withEvent: or pressesCancelled:withEvent:<br>to be sent to the view for all touches or presses recognized as part of this gesture immediately before the action method is called.<br>这句话的意思就是说设置这个值将会影响到手指的触摸事件是否会传送到添加该手势的View上在本文中即recongizer.view(tableView)<br>这样可能还是不够清晰，再说清楚一些就是当我们添加一个reconnizer手势给一个视图的时候，当前window分发触摸事件的时候，<br>会先问该手势有没有被识别(可以理解为于手势绑定的action方法有没有被触发)，当手势识别成功，就会问cancelsTouchesInView是否为YES，如果设置为YES，<br>触摸事件就不会继续分发，那么tableview的 tableView:(UITableView </em>)tableView didSelectRowAtIndexPath:(NSIndexPath <em>)indexPath方法不会触发，<br>因为触摸事件被提前结束了！当手势识别失败的时候(即没有被调用的时候), window就会继续把事件传递下去给该tableView,因为View也是继承自UIResponder的,<br>会立即执行 touchesCancelled:withEvent: or pressesCancelled:withEvent: 到此一个触摸事件循环结束！那么当cancelsTouchesInView设置为NO会发生什么样的变化呢？<br>前面还是不变，当手势识别成功，就会问cancelsTouchesInView是否为YES，如果设置为NO，触摸事件会继续传递给响应链，就不会立即返回，因此还是会调用tableView的<br>tableView:(UITableView </em>)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 还有cell 的按钮触发方法，都是不会受到影响的！</li>
+</ul>
+<p>换句话说就是cancelsTouchesInView ：如果Recognizer分析成功,就会解除View上的绑定的剩余手势事件，那么windows也不会给发送这写手势事件。<br>windows通过给view发送touchesCancelled:withEvent:消息来退出旧事件处理。</p>
+<p>####2.调用API方法<br>tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;<br>UIScrollViewKeyboardDismissModeNone,//默认第一种，为none<br>UIScrollViewKeyboardDismissModeOnDrag,//键盘会当tableView上下滚动的时候自动收起<br>UIScrollViewKeyboardDismissModeInteractive, // 设置键盘的消失方式为拖拉并点击页面，iOS7新增特性</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
   </section>
 
   
@@ -820,7 +1109,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-count">6</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

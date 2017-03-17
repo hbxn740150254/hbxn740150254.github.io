@@ -87,22 +87,34 @@
 
 
 
-<meta name="description" content="一般我们在开发环境中经常会有这样的需求，如果有不是很多的接口的话，一般会这样写
-#define kLoginURLStr                @”http://test.yunlu6.com/api/v1/login“
-#define kLogoutURLStr               @”http://test.yunlu6.com/api/v1/logout“但是 一般 公司 接">
+<meta name="description" content="##iOS中常用地收起键盘的几种方式
+
+#####添加singleTap单击手势
+#####调用API方法
+
+####1.添加singleTap单击手势
+UITapGestureRecognizer *singleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboa">
 <meta property="og:type" content="article">
-<meta property="og:title" content="iOS头文件中如何在宏里引用已有的宏">
-<meta property="og:url" content="http://yoursite.com/2017/03/07/iOS头文件中如何在宏里引用已有的宏/index.html">
+<meta property="og:title" content="一行代码解决UITableView键盘收起">
+<meta property="og:url" content="http://yoursite.com/2017/03/07/一行代码解决UITableView键盘收起/index.html">
 <meta property="og:site_name" content="Michael的小屋">
-<meta property="og:description" content="一般我们在开发环境中经常会有这样的需求，如果有不是很多的接口的话，一般会这样写
-#define kLoginURLStr                @”http://test.yunlu6.com/api/v1/login“
-#define kLogoutURLStr               @”http://test.yunlu6.com/api/v1/logout“但是 一般 公司 接">
-<meta property="og:updated_time" content="2017-03-17T07:31:50.000Z">
+<meta property="og:description" content="##iOS中常用地收起键盘的几种方式
+
+#####添加singleTap单击手势
+#####调用API方法
+
+####1.添加singleTap单击手势
+UITapGestureRecognizer *singleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboa">
+<meta property="og:updated_time" content="2017-03-17T07:37:41.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="iOS头文件中如何在宏里引用已有的宏">
-<meta name="twitter:description" content="一般我们在开发环境中经常会有这样的需求，如果有不是很多的接口的话，一般会这样写
-#define kLoginURLStr                @”http://test.yunlu6.com/api/v1/login“
-#define kLogoutURLStr               @”http://test.yunlu6.com/api/v1/logout“但是 一般 公司 接">
+<meta name="twitter:title" content="一行代码解决UITableView键盘收起">
+<meta name="twitter:description" content="##iOS中常用地收起键盘的几种方式
+
+#####添加singleTap单击手势
+#####调用API方法
+
+####1.添加singleTap单击手势
+UITapGestureRecognizer *singleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboa">
 
 
 
@@ -130,13 +142,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/03/07/iOS头文件中如何在宏里引用已有的宏/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/03/07/一行代码解决UITableView键盘收起/"/>
 
 
 
 
 
-  <title> iOS头文件中如何在宏里引用已有的宏 | Michael的小屋 </title>
+  <title> 一行代码解决UITableView键盘收起 | Michael的小屋 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -255,7 +267,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/07/iOS头文件中如何在宏里引用已有的宏/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/03/07/一行代码解决UITableView键盘收起/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Michael的小屋">
@@ -276,7 +288,7 @@
             
             
               
-                iOS头文件中如何在宏里引用已有的宏
+                一行代码解决UITableView键盘收起
               
             
           </h1>
@@ -327,20 +339,19 @@
       
 
       
-        <p>一般我们在开发环境中经常会有这样的需求，如果有不是很多的接口的话，一般会这样写</p>
-<p>#define kLoginURLStr                @”<a href="http://test.yunlu6.com/api/v1/login" target="_blank" rel="external">http://test.yunlu6.com/api/v1/login</a>“</p>
-<p>#define kLogoutURLStr               @”<a href="http://test.yunlu6.com/api/v1/logout" target="_blank" rel="external">http://test.yunlu6.com/api/v1/logout</a>“<br>但是 一般 公司 接口少则几十个，多则上百个，要是将来改的话，会稍显麻烦，且容易出错，于是会有下面优化的写法：</p>
-<p>#define kTestHostName                @”<a href="http://test.yunlu6.com" target="_blank" rel="external">http://test.yunlu6.com</a>“</p>
-<p>#define kLoginURL                    @”” kTestHostName@”/api/v1/login”</p>
-<p>#define kLogoutURLStr                @”” kTestHostName@”/api/v1/logout”<br>但是很多公司的服务器环境经常会变动，因此，我们还需要考虑到切换域名的情况，于是下面就会写出最终的写法</p>
-<p>#define kTestHostName                @”<a href="http://test.yunlu6.com" target="_blank" rel="external">http://test.yunlu6.com</a>“</p>
-<p>#define kDevelopHostName             @”<a href="http://develop.yunlu6.com" target="_blank" rel="external">http://develop.yunlu6.com</a>“</p>
-<p>#define kHostName                    kDevelopHostName</p>
-<p>#define kLoginURL                    @”” kHostName@”/api/v1/login”</p>
-<p>#define kLogoutURLStr                @”” kHostName@”/api/v1/logout”</p>
-<p>以后就只需要更改这一行宏就可以了</p>
-<p>#define kHostName                    kDevelopHostName/kTestHostName/kOtherHostName</p>
-<p>注：@”” kTestHostName@”/api/v1/login”中 kTestHostName前面必须要有空格用来区分字面量引号”和标志符kTestHostName,否则在编译时候会报错， Invalid suffix on literal; C++11 requires a space between literal and identifier，好的，一切编译正常！</p>
+        <p>##iOS中常用地收起键盘的几种方式</p>
+<ul>
+<li>#####添加singleTap单击手势</li>
+<li>#####调用API方法</li>
+</ul>
+<p>####1.添加singleTap单击手势</p>
+<p>UITapGestureRecognizer *singleTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeKeyboard:)];<br>singleTapGesture.numberOfTapsRequired = 1;<br>singleTapGesture.cancelsTouchesInView = NO;<br>[tableView addGestureRecognizer:singleTapGesture];</p>
+<p>#pragma mark - gesture actions</p>
+<ul>
+<li>(void)closeKeyboard:(UITapGestureRecognizer <em>)recognizer {<br>//在对应的手势触发方法里面让键盘失去焦点<br>[_textField resignFirstResponder];<br>//或者使用第二种方法,该方法会一直找到textField或者内嵌的texfield，让它取消第一响应者<br>//[self.view endEditing:YES];<br>}<br>大家可能会对cancelsTouchesInView这个属性有所好奇，为什么要设置成NO，我们通过看其官方API<br>A Boolean value affecting whether touches are delivered to a view when a gesture is recognized.<br>default is YES. causes touchesCancelled:withEvent: or pressesCancelled:withEvent:<br>to be sent to the view for all touches or presses recognized as part of this gesture immediately before the action method is called.<br>这句话的意思就是说设置这个值将会影响到手指的触摸事件是否会传送到添加该手势的View上在本文中即recongizer.view(tableView)<br>这样可能还是不够清晰，再说清楚一些就是当我们添加一个reconnizer手势给一个视图的时候，当前window分发触摸事件的时候，<br>会先问该手势有没有被识别(可以理解为于手势绑定的action方法有没有被触发)，当手势识别成功，就会问cancelsTouchesInView是否为YES，如果设置为YES，<br>触摸事件就不会继续分发，那么tableview的 tableView:(UITableView </em>)tableView didSelectRowAtIndexPath:(NSIndexPath <em>)indexPath方法不会触发，<br>因为触摸事件被提前结束了！当手势识别失败的时候(即没有被调用的时候), window就会继续把事件传递下去给该tableView,因为View也是继承自UIResponder的,<br>会立即执行 touchesCancelled:withEvent: or pressesCancelled:withEvent: 到此一个触摸事件循环结束！那么当cancelsTouchesInView设置为NO会发生什么样的变化呢？<br>前面还是不变，当手势识别成功，就会问cancelsTouchesInView是否为YES，如果设置为NO，触摸事件会继续传递给响应链，就不会立即返回，因此还是会调用tableView的<br>tableView:(UITableView </em>)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath 还有cell 的按钮触发方法，都是不会受到影响的！</li>
+</ul>
+<p>换句话说就是cancelsTouchesInView ：如果Recognizer分析成功,就会解除View上的绑定的剩余手势事件，那么windows也不会给发送这写手势事件。<br>windows通过给view发送touchesCancelled:withEvent:消息来退出旧事件处理。</p>
+<p>####2.调用API方法<br>tableView.keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;<br>UIScrollViewKeyboardDismissModeNone,//默认第一种，为none<br>UIScrollViewKeyboardDismissModeOnDrag,//键盘会当tableView上下滚动的时候自动收起<br>UIScrollViewKeyboardDismissModeInteractive, // 设置键盘的消失方式为拖拉并点击页面，iOS7新增特性</p>
 
       
     </div>
@@ -377,18 +388,14 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/03/07/一行代码解决UITableView键盘收起/" rel="next" title="一行代码解决UITableView键盘收起">
-                <i class="fa fa-chevron-left"></i> 一行代码解决UITableView键盘收起
-              </a>
-            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/03/07/一行核心代码做出类似tableViewHeaderView和AppStore里的ScrollView悬浮条效果/" rel="prev" title="一行核心代码做出类似tableViewHeaderView和AppStore里的ScrollView悬浮条效果">
-                一行核心代码做出类似tableViewHeaderView和AppStore里的ScrollView悬浮条效果 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/03/07/iOS头文件中如何在宏里引用已有的宏/" rel="prev" title="iOS头文件中如何在宏里引用已有的宏">
+                iOS头文件中如何在宏里引用已有的宏 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
