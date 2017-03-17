@@ -90,7 +90,7 @@
 <meta name="description" content="今天 抽空看了下 Objective-C高级编程iOS与OSX多线程和内存管理，发现自己之前所理解的为什么block会发生循环引用？有些理解是错误的，还好看了这个书，最后弄清楚了，希望写出来，既能算是一种总结，又能让其他小伙伴避免再遇到这个坑！下面 让我们一起来看几个场景！
 项目简单的类结构123456789101112131415161718192021222324252627282930313">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Michael的小屋">
+<meta property="og:title" content="Block循环引用的三种解决方式">
 <meta property="og:url" content="http://yoursite.com/2017/03/07/Block循环引用的三种解决方式/index.html">
 <meta property="og:site_name" content="Michael的小屋">
 <meta property="og:description" content="今天 抽空看了下 Objective-C高级编程iOS与OSX多线程和内存管理，发现自己之前所理解的为什么block会发生循环引用？有些理解是错误的，还好看了这个书，最后弄清楚了，希望写出来，既能算是一种总结，又能让其他小伙伴避免再遇到这个坑！下面 让我们一起来看几个场景！
@@ -98,9 +98,9 @@
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2546918-99b5400dff7efc76.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2546918-cb2f6d53f8269691.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="http://upload-images.jianshu.io/upload_images/2546918-fe43da2b0ccbe275.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2017-03-17T07:18:50.000Z">
+<meta property="og:updated_time" content="2017-03-17T07:25:37.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Michael的小屋">
+<meta name="twitter:title" content="Block循环引用的三种解决方式">
 <meta name="twitter:description" content="今天 抽空看了下 Objective-C高级编程iOS与OSX多线程和内存管理，发现自己之前所理解的为什么block会发生循环引用？有些理解是错误的，还好看了这个书，最后弄清楚了，希望写出来，既能算是一种总结，又能让其他小伙伴避免再遇到这个坑！下面 让我们一起来看几个场景！
 项目简单的类结构123456789101112131415161718192021222324252627282930313">
 <meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/2546918-99b5400dff7efc76.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
@@ -137,7 +137,7 @@
 
 
 
-  <title>  | Michael的小屋 </title>
+  <title> Block循环引用的三种解决方式 | Michael的小屋 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -277,7 +277,7 @@
             
             
               
-                
+                Block循环引用的三种解决方式
               
             
           </h1>
